@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const Discord = require('discord.js')
-const axios = require('axios');
+const axios = require('axios')
 const client = new Discord.Client({
   partials: ['MESSAGE'],
 })
@@ -19,7 +19,11 @@ client.on('messageDelete', msg => {
 })
 
 client.on('message', msg => {
-  if (msg.content.split(/[\s,\?\,\.!]+/).some(word => word.toUpperCase === 'BASED')) {
+  if (
+    msg.content
+      .split(/[\s,\?\,\.!]+/)
+      .some(word => word.toLocaleLowerCase() === 'based')
+  ) {
     msg.react(`🇧`)
     msg.react(`🇦`)
     msg.react(`🇸`)
@@ -36,7 +40,9 @@ client.on('message', msg => {
 
 async function cheweyFunction(msg, command) {
   try {
-    const response = await axios.get(`${cheweyURL}${command}${process.env.CHEWEY_API_KEY}`)
+    const response = await axios.get(
+      `${cheweyURL}${command}${process.env.CHEWEY_API_KEY}`
+    )
     msg.channel.send(`${response.data.data}`)
   } catch (error) {
     console.log(error)
