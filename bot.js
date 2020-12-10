@@ -19,7 +19,7 @@ client.on('messageDelete', msg => {
 })
 
 client.on('message', msg => {
-  if (msg.content.split(/[\s,\?\,\.!]+/).some(word => word === 'based')) {
+  if (msg.content.split(/[\s,\?\,\.!]+/).some(word => word.toUpperCase === 'BASED')) {
     msg.react(`🇧`)
     msg.react(`🇦`)
     msg.react(`🇸`)
