@@ -11,6 +11,7 @@ const animeChanURL = 'https://animechanapi.xyz/api/quotes/'
 
 const BOT_PREFIX = '!'
 const BOT_PREFIX_ANIME = '~'
+const BOT_PREFIX_LYRICS = '$'
 
 client.on('ready', () => {
   console.log('Our bot is ready to go')
@@ -39,6 +40,9 @@ client.on('message', msg => {
   } else if (msg.content.startsWith(`${BOT_PREFIX_ANIME}`)) {
     const messageRegex = msg.content.replace(/[\s,\?\,\.~]+/, '')
     animeChanFunction(msg, messageRegex)
+  } else if (msg.content.startsWith(`${BOT_PREFIX_LYRICS}`)) {
+    const messageRegex = msg.content.replace(/[\s,\?\,\.$]+/, '')
+    getSongLyrics(msg, messageRegex)
   }
 })
 
@@ -68,6 +72,31 @@ async function animeChanFunction(msg, command) {
     }
   } catch (error) {
     msg.channel.send("Can't seem to find that anime... uwu")
+  }
+}
+
+async function getSongLyrics(msg, command) {
+  const [track, artist] = command.split(',')
+  try {
+    const trackResponse = await axios.get(
+      `https://api.musixmatch.com/ws/1.1/track.search?apikey=${process.env.MUSIXMATCH_API_KEY}&q_track=${track}&q_artist=${artist}`
+    )
+    const tracks = trackResponse.data.message.body.track_list.filter(
+      track => track.track.has_lyrics
+    )
+    const trackId = tracks[0].track.track_id
+    const lyricsResponse = await axios.get(
+      `https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=${process.env.MUSIXMATCH_API_KEY}&track_id=${trackId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+    msg.channel.send(`
+    🎵 ${lyricsResponse.data.message.body.lyrics.lyrics_body.split('...')[0]}`)
+  } catch (error) {
+    msg.channel.send("Can't seem to find those lyrics...")
   }
 }
 
