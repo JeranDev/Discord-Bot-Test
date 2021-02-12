@@ -49,7 +49,7 @@ async function cheweyFunction(msg, command) {
     )
     msg.channel.send(`${response.data.data}`)
   } catch (error) {
-    console.log(error)
+    msg.channel.send("Sorry, I don't reconize that command.")
   }
 }
 
