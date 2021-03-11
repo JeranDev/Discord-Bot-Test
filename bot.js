@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const Discord = require('discord.js')
 const axios = require('axios')
+const dogeify = require('dogeify-js')
 const client = new Discord.Client({
   partials: ['MESSAGE'],
 })
@@ -33,6 +34,17 @@ client.on('message', msg => {
     msg.react(`🇪`)
     msg.react(`🇩`)
     msg.react(`😍`)
+  }
+  if (
+    msg.content
+      .split(/[\s,\?\,\.!]+/)
+      .some(
+        word =>
+          word.toLocaleLowerCase() === 'dog' ||
+          word.toLocaleLowerCase() === 'doge'
+      )
+  ) {
+    handleDoge(msg)
   }
   if (msg.content.startsWith(`${BOT_PREFIX}`)) {
     const messageRegex = msg.content.replace(/[\s,\?\,\.!]+/, '')
@@ -97,6 +109,15 @@ async function getSongLyrics(msg, command) {
     🎵 ${lyricsResponse.data.message.body.lyrics.lyrics_body.split('...')[0]}`)
   } catch (error) {
     msg.channel.send("Can't seem to find those lyrics...")
+  }
+}
+
+async function handleDoge(msg) {
+  try {
+    const dogeText = await dogeify(msg.content, { ignore: ['dog', 'doge'] })
+    msg.channel.send(dogeText + '<:dog:819672679975223316>')
+  } catch (error) {
+    console.log(error)
   }
 }
 
