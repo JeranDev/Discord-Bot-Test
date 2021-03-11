@@ -3,6 +3,7 @@ require('dotenv').config()
 const Discord = require('discord.js')
 const axios = require('axios')
 const dogeify = require('dogeify-js')
+const owoify = require('owoifyx')
 const client = new Discord.Client({
   partials: ['MESSAGE'],
 })
@@ -13,6 +14,7 @@ const animeChanURL = 'https://animechanapi.xyz/api/quotes/'
 const BOT_PREFIX = '!'
 const BOT_PREFIX_ANIME = '~'
 const BOT_PREFIX_LYRICS = '$'
+const BOT_PREFIX_OWO = 'owo'
 
 client.on('ready', () => {
   console.log('Our bot is ready to go')
@@ -35,6 +37,7 @@ client.on('message', msg => {
     msg.react(`🇩`)
     msg.react(`😍`)
   }
+
   if (
     msg.content
       .split(/[\s,\?\,\.!]+/)
@@ -46,6 +49,7 @@ client.on('message', msg => {
   ) {
     handleDoge(msg)
   }
+
   if (msg.content.startsWith(`${BOT_PREFIX}`)) {
     const messageRegex = msg.content.replace(/[\s,\?\,\.!]+/, '')
     cheweyFunction(msg, messageRegex)
@@ -55,6 +59,8 @@ client.on('message', msg => {
   } else if (msg.content.startsWith(`${BOT_PREFIX_LYRICS}`)) {
     const messageRegex = msg.content.replace(/[\s,\?\,\.$]+/, '')
     getSongLyrics(msg, messageRegex)
+  } else if (msg.content.startsWith(`${BOT_PREFIX_OWO}`)) {
+    handleOwo(msg)
   }
 })
 
@@ -116,6 +122,16 @@ async function handleDoge(msg) {
   try {
     const dogeText = await dogeify(msg.content, { ignore: ['dog', 'doge'] })
     msg.channel.send(dogeText + '<:dog:819672679975223316>')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function handleOwo(msg) {
+  try {
+    const owoText = await owoify(msg.content.slice(3) + ' (*^ω^)')
+    msg.channel.send(owoText)
+    return
   } catch (error) {
     console.log(error)
   }
