@@ -59,7 +59,7 @@ client.on('message', msg => {
   } else if (msg.content.startsWith(`${BOT_PREFIX_LYRICS}`)) {
     const messageRegex = msg.content.replace(/[\s,\?\,\.$]+/, '')
     getSongLyrics(msg, messageRegex)
-  } else if (msg.content.startsWith(`${BOT_PREFIX_OWO}`)) {
+  } else if (msg.content.toLocaleLowerCase().startsWith(`${BOT_PREFIX_OWO}`)) {
     handleOwo(msg)
   }
 })
