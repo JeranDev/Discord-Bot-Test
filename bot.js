@@ -10,9 +10,9 @@ const client = new Discord.Client({
 const cheweyURL = 'https://api.chewey-bot.top/'
 const animeChanURL = 'https://animechanapi.xyz/api/quotes/'
 
-const BOT_PREFIX = '!'
-const BOT_PREFIX_ANIME = '~'
-const BOT_PREFIX_LYRICS = '$'
+// const BOT_PREFIX = '!'
+// const BOT_PREFIX_ANIME = '~'
+// const BOT_PREFIX_LYRICS = '$'
 const BOT_PREFIX_OWO = 'owo'
 
 client.on('ready', () => {
